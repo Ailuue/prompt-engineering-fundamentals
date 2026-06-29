@@ -6,7 +6,7 @@ USE CASE: pull clean, typed records out of messy unstructured text (here, a
 job posting) so downstream code can store/filter them.
 
 Optimizations applied: explicit schema with types, normalization rules,
-null handling, few-shot-style field descriptions, json_object format, and
+null handling, few-shot-style field descriptions, forced-JSON output, and
 defensive parsing.
 
 Run:  python examples/02_data_extraction.py
@@ -72,7 +72,7 @@ def optimized() -> str:
             {"role": "user", "content": OPTIMIZED_PROMPT},
         ],
         temperature=0,
-        response_format={"type": "json_object"},
+        json=True,
     )
 
 
@@ -101,5 +101,5 @@ if __name__ == "__main__":
         "  - Typed fields (int salary, bool remote) are query-ready, not prose.\n"
         "  - Explicit null policy distinguishes 'absent' from 'guessed'.\n"
         "  - Normalization rules make '80-95k' a structured range every time.\n"
-        "  - json_object + try/except = robust, machine-readable pipeline."
+        "  - json=True + try/except = robust, machine-readable pipeline."
     )

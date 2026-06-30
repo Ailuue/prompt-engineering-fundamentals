@@ -143,7 +143,7 @@ def chat(
             params["stop"] = stop
         resp = _openai_client().chat.completions.create(
             model=model or chat_model(),
-            messages=messages,
+            messages=messages,  # type: ignore[arg-type]
             temperature=temperature,
             max_tokens=max_tokens,
             **params,
@@ -164,7 +164,7 @@ def chat(
             convo = convo + [{"role": "assistant", "content": "{"}]
         resp = _anthropic_client().messages.create(
             model=model or chat_model(),
-            messages=convo,
+            messages=convo,  # type: ignore[arg-type]
             **params,
         )
         text = "".join(b.text for b in resp.content if b.type == "text")
@@ -185,9 +185,9 @@ def chat_stream(
     p = provider_name()
 
     if p == "openai":
-        stream = _openai_client().chat.completions.create(
+        stream = _openai_client().chat.completions.create(  # type: ignore[call-overload]
             model=model or chat_model(),
-            messages=messages,
+            messages=messages,  # type: ignore[arg-type]
             temperature=temperature,
             max_tokens=max_tokens,
             stream=True,
@@ -204,7 +204,7 @@ def chat_stream(
         if system:
             params["system"] = system
         with _anthropic_client().messages.stream(
-            model=model or chat_model(), messages=convo, **params
+            model=model or chat_model(), messages=convo, **params  # type: ignore[arg-type]
         ) as stream:
             for text in stream.text_stream:
                 yield text
@@ -235,7 +235,7 @@ def structured(
     if p == "openai":
         resp = _openai_client().chat.completions.create(
             model=model or chat_model(),
-            messages=messages,
+            messages=messages,  # type: ignore[arg-type]
             temperature=temperature,
             max_tokens=max_tokens,
             response_format={
@@ -250,9 +250,9 @@ def structured(
         params: dict = {"temperature": min(temperature, 1.0), "max_tokens": max_tokens}
         if system:
             params["system"] = system
-        resp = _anthropic_client().messages.create(
+        resp = _anthropic_client().messages.create(  # type: ignore[call-overload]
             model=model or chat_model(),
-            messages=convo,
+            messages=convo,  # type: ignore[arg-type]
             tools=[{"name": name, "description": f"Return the {name} as structured data.", "input_schema": schema}],
             tool_choice={"type": "tool", "name": name},
             **params,

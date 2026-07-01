@@ -17,19 +17,30 @@ KEY IDEAS
 Run:  python fundamentals/09_self_consistency.py
 """
 
+# --- make the repo-root 'common' package importable when run directly ---
+import os
 import re
+import sys
 from collections import Counter
 
-# --- make the repo-root 'common' package importable when run directly ---
-import os, sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from common import chat, header, rule
 
-# A word problem people (and models) frequently slip on.
+# A 4-color combinatorics/probability problem with an "at least" condition.
+# Counting-based reasoning is a well-known weak spot for LLMs -- much more so
+# than straight arithmetic -- and this version needs the solver to enumerate
+# every (color, count) case on their own (3/4/5 of red, 3/4 of blue, 3/4/5 of
+# green, 3 of yellow) and sum C(n, k) * C(others, 5-k) for each, with no
+# overlap to worry about since two colors can't each reach 3 within a 5-draw
+# hand. That's a lot of cases to track without dropping or double-counting
+# one, which is a much better source of genuine, independent per-sample
+# slips than a problem a strong model just carries out correctly every time.
 PROBLEM = (
-    "I bought 3 boxes with 12 eggs each. I dropped one box and 5 eggs in another "
-    "box were cracked. I used 7 good eggs to bake. How many good eggs are left?"
+    "A bag contains 6 red, 4 blue, 5 green, and 3 yellow marbles. You draw five "
+    "marbles at random, without replacement. What is the probability that you "
+    "get at least 3 marbles of the same color? Give your answer as a "
+    "percentage, rounded to the nearest whole number."
 )
 
 PROMPT = (

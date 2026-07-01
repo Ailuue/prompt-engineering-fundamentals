@@ -19,7 +19,9 @@ Run:  python fundamentals/01_zero_shot.py
 """
 
 # --- make the repo-root 'common' package importable when run directly ---
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from common import chat, header, rule
@@ -29,7 +31,9 @@ REVIEW = "The screen is gorgeous but the battery dies in three hours and support
 
 def vague_zero_shot() -> str:
     # Weak: no format, no label set -> the model rambles or guesses a scale.
-    return chat([{"role": "user", "content": f"What do you think of this review? {REVIEW}"}])
+    return chat(
+        [{"role": "user", "content": f"What do you think of this review? {REVIEW}"}]
+    )
 
 
 def good_zero_shot() -> str:

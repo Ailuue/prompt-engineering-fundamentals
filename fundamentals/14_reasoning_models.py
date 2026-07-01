@@ -24,10 +24,12 @@ minimal version usually matches or beats it with fewer tokens.)
 Run:  python fundamentals/14_reasoning_models.py
 """
 
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from common import chat, header, rule, chat_model
+from common import chat, chat_model, header, rule
 
 # A model may have a dedicated reasoning model configured; fall back to the default.
 REASONING_MODEL = os.getenv("REASONING_MODEL", chat_model())
@@ -65,11 +67,19 @@ if __name__ == "__main__":
 
     rule()
     print("\n[Style A — verbose 'think step by step' scaffolding] ->")
-    print(chat([{"role": "user", "content": VERBOSE}], model=REASONING_MODEL, temperature=0))
+    print(
+        chat(
+            [{"role": "user", "content": VERBOSE}], model=REASONING_MODEL, temperature=0
+        )
+    )
 
     rule()
     print("\n[Style B — goal + constraints only, no scaffolding] ->")
-    print(chat([{"role": "user", "content": MINIMAL}], model=REASONING_MODEL, temperature=0))
+    print(
+        chat(
+            [{"role": "user", "content": MINIMAL}], model=REASONING_MODEL, temperature=0
+        )
+    )
 
     rule()
     print(

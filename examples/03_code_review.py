@@ -13,12 +13,14 @@ Run:  python examples/03_code_review.py
 """
 
 # --- make the repo-root 'common' package importable when run directly ---
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from common import chat, header, rule
 
-CODE = '''\
+CODE = """\
 def get_user_orders(db, user_id):
     query = "SELECT * FROM orders WHERE user_id = " + user_id
     results = db.execute(query)
@@ -26,7 +28,8 @@ def get_user_orders(db, user_id):
     for r in results:
         orders.append(r)
     return orders
-'''
+"""
+
 
 # --------------------------------------------------------------------------
 # BEFORE: "review this code" -> typically a friendly but shallow summary that
@@ -66,7 +69,10 @@ def optimized() -> str:
     return chat(
         [
             {"role": "system", "content": OPTIMIZED_SYSTEM},
-            {"role": "user", "content": f"Review this Python function:\n\n```python\n{CODE}```"},
+            {
+                "role": "user",
+                "content": f"Review this Python function:\n\n```python\n{CODE}```",
+            },
         ],
         temperature=0.2,
     )
@@ -76,10 +82,12 @@ if __name__ == "__main__":
     header("EXAMPLE 3 - CODE REVIEW")
     print("\nCode under review:\n", CODE)
 
-    rule(); print("\n[BEFORE - 'review this code'] ->")
+    rule()
+    print("\n[BEFORE - 'review this code'] ->")
     print(naive())
 
-    rule(); print("\n[AFTER - persona + rubric + severity + fixes] ->")
+    rule()
+    print("\n[AFTER - persona + rubric + severity + fixes] ->")
     print(optimized())
 
     rule()

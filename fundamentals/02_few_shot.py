@@ -21,7 +21,9 @@ Run:  python fundamentals/02_few_shot.py
 """
 
 # --- make the repo-root 'common' package importable when run directly ---
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from common import chat, header, rule
@@ -35,7 +37,10 @@ FEW_SHOT_EXAMPLES = [
     {"role": "assistant", "content": "billing|high"},
     {"role": "user", "content": "How do I change my profile picture?"},
     {"role": "assistant", "content": "how-to|low"},
-    {"role": "user", "content": "The whole site has been down for an hour, we can't work."},
+    {
+        "role": "user",
+        "content": "The whole site has been down for an hour, we can't work.",
+    },
     {"role": "assistant", "content": "outage|urgent"},
 ]
 
